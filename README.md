@@ -1,1 +1,1 @@
-# weater_forecast
+# weather_forecast
