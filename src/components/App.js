@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 
+const url = `http://6e6d-34-74-29-25.ngrok.io/`;
 
 function TodayDateInfo() {
   
@@ -17,23 +18,50 @@ function TodayDateInfo() {
 function App() {
   let [forecastedTemp, setForecastedTemp] = useState(1);
   let [afterYear, setAfterYear] = useState(1);
+  let [todayTemp, setTodayTemp] = useState(1);
   function nYearForecasting(e){
     let valueInt = parseInt(e.target.value);
     if(valueInt){
       setAfterYear(valueInt);
+
+      let {year, date, day} = TodayDateInfo();
+      fetch(`${url}?date=${year + afterYear}-${date}-${day}`)
+      .then(res => res.json())
+      .then(
+        result => {
+          todayYearTemp();
+          setForecastedTemp(result.tem);
+        }
+      ).catch(
+        err=>console.log(err)
+      )
     }
   }
+  function todayYearTemp(){
+    let {year, date, day} = TodayDateInfo();
+    fetch(`${url}?date=${year}-${date}-${day}`)
+    .then(res => res.json())
+    .then(
+      result => {
+        setTodayTemp(result.tem);
+      }
+    ).catch(
+      err=>console.log(err)
+    )
 
+  }
 
   useEffect(()=>{
 
     let {year, date, day} = TodayDateInfo();
 
-    fetch(`955c-34-74-29-25.ngrok.io/?date=${2022}-${12}-${2}`, {mode:'no-cors'})
+    fetch(`${url}?date=${year + afterYear}-${date}-${day}`)
       .then(res => res.json())
       .then(
         result => {
-          console.log(result);
+          todayYearTemp();
+          setForecastedTemp(result.tem);
+          console.log(todayTemp, forecastedTemp);
         }
       )
       
@@ -49,6 +77,10 @@ function App() {
       <div className="forecast">
         {forecastedTemp}<span className="c">ºC</span>
       </div>
+      <div className="forecastDiff">
+        올해에 비해 {(forecastedTemp - 2.5).toFixed(4)}ºC 변화하였습니다.
+      </div>
+      <br/>
       <div>
         인공지능을 활용하여 미래의 기온을 예측합니다.
       </div>

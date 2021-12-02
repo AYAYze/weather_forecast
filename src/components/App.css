@@ -29,6 +29,11 @@
 .forecast {
   font-size: 100px;
 }
+
+.forecastDiff {
+  font-size: 25px;
+}
+
 .c{
   font-size: 30px;
 }
