@@ -1,0 +1,10 @@
+.root {
+    display:flex;
+    flex-direction: column;
+    scroll-snap-type: y mandatory;
+}
+
+
+.scroll {
+    scroll-snap-align: center;
+}
